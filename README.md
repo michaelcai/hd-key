@@ -98,7 +98,23 @@ Getter/Setter of the `hdkey`'s `xpub`, stored as a string.
 
 ## Developing
 
-//TODO: 添加开发攻略
+### Dev
+
+```shell
+yarn watch
+```
+
+### Test
+
+```shell
+yarn test
+```
+
+### Cov
+
+```shel
+yarn cov
+```
 
 ## Versioning
 
