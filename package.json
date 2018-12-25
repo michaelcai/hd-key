@@ -1,6 +1,6 @@
 {
-  "name": "hd-key",
-  "version": "0.1.1",
+  "name": "t-hd-key",
+  "version": "0.1.2",
   "private": false,
   "description": "Bitcoin BIP32 hierarchical deterministic keys Typescript implemention",
   "main": "build/main/index.js",
