@@ -8,4 +8,5 @@ tsconfig.json
 tsconfig.watch.json
 tsconfig.build.json
 webpack.config.js
+tsling.json
 test.js
