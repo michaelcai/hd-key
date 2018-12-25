@@ -1,18 +1,16 @@
 
-# Chainstack.js
+# hd-key
 
-Javascript API for integration with Chainstack blockchains using Chainstack RPC API.
+Bitcoin BIP32 hierarchical deterministic keys Typescript implemention.
 
 ## Installing / Getting started
 
-### NodeJS
-
 ```shell
-npm install @tchainstack/chainstack.js
+npm install --save hd-key
 
 // or
 
-yarn add -S @tchainstack/chainstack.js
+yarn add hd-key
 ```
 
 ## Basic Usage
