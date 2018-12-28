@@ -12,10 +12,22 @@ describe('hdkey', () => {
       it(`should properly derive the chain path: ${key.path}`, () => {
         const hdkey = HDKey.fromMasterSeed(Buffer.from(key.seed, 'hex'))
         const childkey = hdkey.derive(key.path)
-
         expect(childkey.privateExtendedKey).toEqual(key.private)
         expect(childkey.publicExtendedKey).toEqual(key.public)
       })
+
+      // it("should properly derive the chain path: m/44'/709394", () => {
+      //   const hdkey = HDKey.fromMasterSeed(
+      //     Buffer.from(
+      //       'b851e3ee9054c2d7ad40624f04aa58bea364e7654cc0dbe5a8edcf5315d8f72c6788736e5eb1146cbd8fd4f9604dfb2cf721ac4bbe3ec47ce2a1bf4a8df73195',
+      //       'hex'
+      //     )
+      //   )
+
+      //   const childkey = hdkey.derive("m/44'/709394'/0'/0/1")
+      //   expect(childkey.privateKey)
+
+      // })
 
       describe(`> ${key.path} toJSON() / fromJSON()`, () => {
         it('should return an object read for JSON serialization', () => {

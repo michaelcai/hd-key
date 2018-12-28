@@ -199,6 +199,11 @@ class HDKey {
       return this
     }
 
+    let newHDKey: HDKey = HDKey.fromExtendedKey(
+      this.privateExtendedKey || this.publicExtendedKey,
+      this.versions
+    )
+
     path.split('/').forEach((c, index) => {
       if (index === 0) {
         assert(/^[mM]{1}/.test(c), 'Path must start with "m" or "M"')
@@ -214,10 +219,10 @@ class HDKey {
         childIndex += HDKey.HARDENED_OFFSET
       }
 
-      this.deriveChild(childIndex)
+      newHDKey = newHDKey.deriveChild(childIndex)
     })
 
-    return this
+    return newHDKey
   }
 
   public deriveChild(index: number): HDKey {
@@ -250,13 +255,13 @@ class HDKey {
     const IL = I.slice(0, 32)
     const IR = I.slice(32)
 
-    const parentFingerprint = this._fingerprint
+    const newHDKey = new HDKey(this.versions)
 
     // Private parent key -> private child key
     if (this._privateKey) {
       // ki = parse256(IL) + kpar (mod n)
       try {
-        this.privateKey = secp256k1.privateKeyTweakAdd(this.privateKey, IL)
+        newHDKey.privateKey = secp256k1.privateKeyTweakAdd(this.privateKey, IL)
         // throw if IL >= n || (privateKey + IL) === 0
       } catch (err) {
         // In case parse256(IL) >= n or ki == 0, one should proceed with the next value for i
@@ -267,7 +272,11 @@ class HDKey {
       // Ki = point(parse256(IL)) + Kpar
       //    = G*IL + Kpar
       try {
-        this.publicKey = secp256k1.publicKeyTweakAdd(this.publicKey, IL, true)
+        newHDKey.publicKey = secp256k1.publicKeyTweakAdd(
+          this.publicKey,
+          IL,
+          true
+        )
         // throw if IL >= n || (g**IL + publicKey) is infinity
       } catch (err) {
         // In case parse256(IL) >= n or Ki is the point at infinity, one should proceed with the next value for i
@@ -275,12 +284,12 @@ class HDKey {
       }
     }
 
-    this._chainCode = IR
-    this._depth = this._depth + 1
-    this._parentFingerprint = parentFingerprint
-    this._index = index
+    newHDKey._chainCode = IR
+    newHDKey._depth = this._depth + 1
+    newHDKey._parentFingerprint = this._fingerprint
+    newHDKey._index = index
 
-    return this
+    return newHDKey
   }
 
   public sign(hash: Buffer): Buffer {
